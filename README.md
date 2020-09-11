@@ -11,7 +11,6 @@ Please only use this for scambaiting or personal means that do not hurt anyone. 
 * Disabled inspect on account information page (still accessible through other pages)
 * Session inactivity timeout (15 minutes)
 * Recent activities
-* Creepy face show up from time to time
 
 ## Features to add
 * External account transfer
@@ -19,15 +18,19 @@ Please only use this for scambaiting or personal means that do not hurt anyone. 
 
 ## Screenshots
 ### Home page
-![image](assets/png/Screenshot.3.png)
-### Logged in home page
-![image](assets/png/Screenshot.1.png)
-### Account page
-![image](assets/png/Screenshot.2.png)
-### Transfer page
-![image](assets/png/Screenshot.4.png)
-### Activities page
-![image](assets/png/Screenshot.5.png)
+![image](assets/png/ScreenshotNew0.png)
+### Log In
+![image](assets/png/ScreenshotNew1.png)
+### Register
+![image](assets/png/ScreenshotNew2.png)
+### Dashboard
+![image](assets/png/ScreenshotNew3.png)
+### Activities
+![image](assets/png/ScreenshotNew4.png)
+### Transfer
+![image](assets/png/ScreenshotNew5.png)
+### Secret Settings
+![image](assets/png/ScreenshotNew6.png)
 
 ## How to setup
 ### This instruction is for windows users, although the steps are mostly the same.
@@ -114,8 +117,7 @@ Moved to [Painful_Load](https://github.com/lahrence/Painful-Load).
 5. Done!
 
 ## Experimental Features and Details
-* **Download button** When enabled (by going into 'setup.json' and changing `downloadButton` to true), users can have a custom button that, when clicked, downloads a file of their choosing.
-* **setup.json** setup.json is a new JSON file used to enable/disable editable features (very short list at the moment).
+* None at the moment
 
 ## Note
 I did not create the chrome extension included in this repo. It was taken and modified from [bankboga](https://github.com/hadenpf/bankboga). Credit for the extension goes to the creator.
