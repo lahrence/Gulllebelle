@@ -5,6 +5,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 #30 minutes = 1800 15 minutes = 900
 if($_SESSION['timesince'] >= 900) {
     session_destroy();
+    sleep(5);
     header("Location: ../index.php?timeout");
     exit();
 } else {

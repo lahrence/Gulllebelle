@@ -2,11 +2,14 @@
     include 'dbh.inc.php';
     session_start();
     require 'inactivity.php';
-
+    
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
     $sql = "SELECT * FROM users WHERE idUsers=".$_SESSION['userId'].";";
     $result = mysqli_query($conn, $sql);
     $resultCheck = mysqli_num_rows($result);
     $idUser = $_SESSION['userId'];
+    $json = trim(file_get_contents($root."/setup.json"), "\xEF\xBB\xBF");
+    $settings = json_decode($json, true);
 if (isset($_POST['transfer-submit'])) {
     if (isset($_SESSION['timesince'])) {
     if ($resultCheck > 0) {
@@ -46,72 +49,89 @@ if (isset($_POST['transfer-submit'])) {
         $positive = false;
         $negative = true;
     }
-    if ($amount <= 5000) {
-        if ($outaccount !== $inaccount) {
-                if ($outaccount !== 'credits') {
-                    if ($accountbal >= $amount) {
-                        if ($inaccount !== 'credits') {
-                            $sql = "UPDATE users SET ".$outaccount."=".$outaccount."-".$amount.", ".$inaccount."=".$inaccount."+".$amount." WHERE    idUsers=".$idUser.";";
-                            mysqli_query($conn, $sql);
-                            $new = array(
-                                "account"=>"****".$accountNumber, 
-                                "date"=>date("m/d"),
-                                "year"=>date("Y"),
-                                "desc"=>"Balance Transfer", 
-                                "amount"=>floatval($amount),
-                                "positive"=>$positive
-                            );
-                            $json = trim(file_get_contents("../assets/users/".$_SESSION['userUid'].".json"), "\xEF\xBB\xBF");
-                            $arr = json_decode($json, true);
-                            $array = array_push($arr, $new);
-                            $fp = fopen('../assets/users/'.$_SESSION['userUid'].'.json', 'w');
-                            fwrite($fp, json_encode($arr, JSON_PRETTY_PRINT));
-                            header("Location: ../accounts/index.php?transfer=success");
-                            exit();
-                        } else if ($inaccount == 'credits') {
-                            $sql = "UPDATE users SET ".$outaccount."=".$outaccount."-".$amount.", ".$inaccount."=".$inaccount."-".$amount." WHERE    idUsers=".$idUser.";";
-                            mysqli_query($conn, $sql);
-                            $new = array(
-                                "account"=>"****".$accountNumberCredits, 
-                                "date"=>date("m/d"),
-                                "year"=>date("Y"),
-                                "desc"=>"Balance Transfer", 
-                                "amount"=>floatval($amount),
-                                "positive"=>$negative
-                            );
-                            $json = trim(file_get_contents("../assets/users/".$_SESSION['userUid'].".json"), "\xEF\xBB\xBF");
-                            $arr = json_decode($json, true);
-                            $array = array_push($arr, $new);
-                            $fp = fopen('../assets/users/'.$_SESSION['userUid'].'.json', 'w');
-                            fwrite($fp, json_encode($arr, JSON_PRETTY_PRINT));
-                            header("Location: ../accounts/index.php?transfer=success");
+    if ($amount <= $settings['transferLimit']) {
+        if ($amount >= 0.01) {
+            if ($outaccount !== $inaccount) {
+                    if ($outaccount !== 'credits') {
+                        if ($accountbal >= $amount) {
+                            if ($inaccount !== 'credits') {
+                                $sql = "UPDATE users SET ".$outaccount."=".$outaccount."-".$amount.", ".$inaccount."=".$inaccount."+".$amount." WHERE    idUsers=".$idUser.";";
+                                mysqli_query($conn, $sql);
+                                $new = array(
+                                    "account"=>"****".substr($accountNumber, -4), 
+                                    "date"=>date("m/d"),
+                                    "year"=>date("Y"),
+                                    "desc"=>"Balance Transfer", 
+                                    "amount"=>floatval($amount),
+                                    "positive"=>$positive
+                                );
+                                $json = trim(file_get_contents("../assets/users/".$_SESSION['userUid'].".json"), "\xEF\xBB\xBF");
+                                $arr = json_decode($json, true);
+                                $array = array_push($arr, $new);
+                                $fp = fopen('../assets/users/'.$_SESSION['userUid'].'.json', 'w');
+                                fwrite($fp, json_encode($arr, JSON_PRETTY_PRINT));
+                                sleep(2);
+                                echo "Pending...";
+                                sleep(2);
+                                echo "Transfer completed!";
+                                header("Location: ../dashboard/index.php?transfer=success");
+                                exit();
+                            } else if ($inaccount == 'credits') {
+                                $sql = "UPDATE users SET ".$outaccount."=".$outaccount."-".$amount.", ".$inaccount."=".$inaccount."-".$amount." WHERE    idUsers=".$idUser.";";
+                                mysqli_query($conn, $sql);
+                                $new = array(
+                                    "account"=>"****".substr($accountNumberCredits, -4), 
+                                    "date"=>date("m/d"),
+                                    "year"=>date("Y"),
+                                    "desc"=>"Balance Transfer", 
+                                    "amount"=>floatval($amount),
+                                    "positive"=>$negative
+                                );
+                                $json = trim(file_get_contents("../assets/users/".$_SESSION['userUid'].".json"), "\xEF\xBB\xBF");
+                                $arr = json_decode($json, true);
+                                $array = array_push($arr, $new);
+                                $fp = fopen('../assets/users/'.$_SESSION['userUid'].'.json', 'w');
+                                fwrite($fp, json_encode($arr, JSON_PRETTY_PRINT));
+                                sleep(2);
+                                echo "Pending";
+                                sleep(2);
+                                echo "Transfer completed";
+                                header("Location: ../dashboard/index.php?transfer=success");
+                                exit();
+                            }
+                        } else {
+                            header("Location: ../transfer/index.php?error=insufficientfunds");
                             exit();
                         }
-                    } else {
-                        header("Location: ../transfer/index.php?error=insufficientfunds");
+                    } else if ($outaccount == 'credits') {
+                        $sql = "UPDATE users SET ".$outaccount."=".$outaccount."+".$amount.", ".$inaccount."=".$inaccount."+".$amount." WHERE    idUsers=".$idUser.";";
+                        mysqli_query($conn, $sql);
+                        $new = array(
+                            "account"=>"****".substr($accountNumber, -4), 
+                            "date"=>date("m/d"),
+                            "year"=>date("Y"),
+                            "desc"=>"Balance Transfer", 
+                            "amount"=>floatval($amount),
+                            "positive"=>$positive
+                        );
+                        $json = trim(file_get_contents("../assets/users/".$_SESSION['userUid'].".json"), "\xEF\xBB\xBF");
+                        $arr = json_decode($json, true);
+                        $array = array_push($arr, $new);
+                        $fp = fopen('../assets/users/'.$_SESSION['userUid'].'.json', 'w');
+                        fwrite($fp, json_encode($arr, JSON_PRETTY_PRINT));
+                        sleep(2);
+                        echo "Pending";
+                        sleep(2);
+                        echo "Transfer completed";
+                        header("Location: ../dashboard/index.php?transfer=success");
                         exit();
                     }
-                } else if ($outaccount == 'credits') {
-                    $sql = "UPDATE users SET ".$outaccount."=".$outaccount."+".$amount.", ".$inaccount."=".$inaccount."+".$amount." WHERE    idUsers=".$idUser.";";
-                    mysqli_query($conn, $sql);
-                    $new = array(
-                        "account"=>"****".$accountNumber, 
-                        "date"=>date("m/d"),
-                        "year"=>date("Y"),
-                        "desc"=>"Balance Transfer", 
-                        "amount"=>floatval($amount),
-                        "positive"=>$positive
-                    );
-                    $json = trim(file_get_contents("../assets/users/".$_SESSION['userUid'].".json"), "\xEF\xBB\xBF");
-                    $arr = json_decode($json, true);
-                    $array = array_push($arr, $new);
-                    $fp = fopen('../assets/users/'.$_SESSION['userUid'].'.json', 'w');
-                    fwrite($fp, json_encode($arr, JSON_PRETTY_PRINT));
-                    header("Location: ../accounts/index.php?transfer=success");
-                    exit();
-                }
+            } else {
+                header("Location: ../transfer/index.php?error=invalidaccounts");
+                exit();
+            }
         } else {
-            header("Location: ../transfer/index.php?error=invalidaccounts");
+            header("Location: ../transfer/index.php?error=noamount");
             exit();
         }
     } else {

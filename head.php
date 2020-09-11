@@ -7,6 +7,9 @@
         <title><?php
             if (substr_count($_SERVER['REQUEST_URI'], '/') >= 2) {
                 $url = ucwords(str_replace("/", " ", $_SERVER['REQUEST_URI']));
+                if (substr_count($_SERVER['REQUEST_URI'], '-') >= 1) {
+                    $url = ucwords(str_replace("-", " ", $url));
+                }
                 $str = explode('Index', $url);
                 $url = $str[0];
                 echo $url;
@@ -24,6 +27,12 @@
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     </head>
     <script src="/assets/js/main.js"></script>
     <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>

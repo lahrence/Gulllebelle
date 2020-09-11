@@ -58,3 +58,50 @@ function quizTimer(){
 function rand(min, max) {
   return Math.random() * (max - min) + min;
 }
+
+function goToAccount(account) {
+    window.location.href = "https://www.gulllebelle.com/accounts/" + account;
+}
+
+function nextStep(step) {
+    switch(step) {
+        case 1:
+            console.log('1');
+            document.querySelector(".firstCircle").classList.add("currentCircle");
+            document.querySelector(".secondCircle").classList.remove("currentCircle");
+            document.querySelector(".thirdCircle").classList.remove("currentCircle");
+            document.querySelector(".CardSectionFirst").classList.add("firstSection");
+            document.querySelector(".CardSectionFirst").classList.remove("secondSection");
+            document.querySelector(".CardSectionFirst").classList.remove("thirdSection");
+            break;
+        case 2:
+            console.log('2');
+            document.querySelector(".firstCircle").classList.remove("currentCircle");
+            document.querySelector(".secondCircle").classList.add("currentCircle");
+            document.querySelector(".thirdCircle").classList.remove("currentCircle");
+            document.querySelector(".CardSectionFirst").classList.remove("firstSection");
+            document.querySelector(".CardSectionFirst").classList.add("secondSection");
+            document.querySelector(".CardSectionFirst").classList.remove("thirdSection");
+            break;
+        case 3:
+            console.log('3');
+            document.querySelector(".firstCircle").classList.remove("currentCircle");
+            document.querySelector(".secondCircle").classList.remove("currentCircle");
+            document.querySelector(".thirdCircle").classList.add("currentCircle");
+            document.querySelector(".CardSectionFirst").classList.remove("firstSection");
+            document.querySelector(".CardSectionFirst").classList.remove("secondSection");
+            document.querySelector(".CardSectionFirst").classList.add("thirdSection");
+            break;
+    }
+}
+
+function turnOne(turn) {
+    if (typeof turnMore == 'undefined') {
+        turnMore = 0;
+    }
+    turnMore = turnMore + turn;
+    console.log(turnMore);
+    if (turnMore == 10) {
+        window.location.href = "https://www.gulllebelle.com/hidden/";
+    }
+}

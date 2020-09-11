@@ -42,60 +42,13 @@
         <section class="user-information dashboard-section" id="user-information">
             <div class="available">
                 <h2>Transfer</h2>
-                <form action="/includes/transfer.inc.php" method="post">
+                <form action="/includes/transaction.inc.php" method="post">
                     <div class="Card CardDoubleHor CardTrippleVert CardNoHover CardHiddenFlow">
                         <div class="wrap-step">
                             <div class="step">
                             </div>
                         </div>
                         <div class="CardSection CardSectionFirst firstSection">
-                            <h1>From Account</h1>
-                            <select name="outaccount">
-                                <option value="chckAcc" <?php 
-                                if (isset($_GET['transferfrom'])) {
-                                    if ($_GET['transferfrom'] == 'sav') {
-                                        echo "selected='check'";
-                                    }
-                                }
-                                ?>><?php
-                                    echo 'Checking (';
-                                    if ($userCheckingBal < 0) {
-                                        echo '-';
-                                    }
-                                    echo '$'.number_format(abs($userCheckingBal), 2, '.', ',');
-                                ?>)
-                                </option>    
-                                <option value="credits" <?php 
-                                if (isset($_GET['transferfrom'])) {
-                                    if ($_GET['transferfrom'] == 'cred') {
-                                        echo "selected='selected'";
-                                    }
-                                }
-                                ?>><?php
-                                    echo 'Credits (';
-                                    if ($userCreditsBal < 0) {
-                                        echo '-';
-                                    }
-                                    echo '$'.number_format(abs($userCreditsBal), 2, '.', ',');
-                                ?>)
-                                </option>    
-                                <option value="savAcc" <?php 
-                                if (isset($_GET['transferfrom'])) {
-                                    if ($_GET['transferfrom'] == 'sav') {
-                                        echo "selected='selected'";
-                                    }
-                                }
-                                ?>><?php
-                                    echo 'Savings (';
-                                    if ($userSavingsBal < 0) {
-                                        echo '-';
-                                    }
-                                    echo '$'.number_format(abs($userSavingsBal), 2, '.', ',');
-                                ?>)
-                                </option>    
-                            </select>
-                        </div>
-                        <div class="CardSection">
                             <h1>To Account</h1>
                             <?php
                                 if (!isset($_GET['external']) || $_GET['external'] == 'false') {
@@ -154,8 +107,12 @@
                             ?>
                         </div>
                         <div class="CardSection">
+                            <h1>Description</h1>
+                            <input name="desc" type="text" placeholder="description" required>
+                        </div>
+                        <div class="CardSection">
                             <h1>Amount(<?php echo $settings['currencySymbol']; ?>)</h1>
-                            <input name="amount" type="number" placeholder="amount" min="0.00" required pattern="[0-9\.]+" value="0.00" step="0.01">
+                            <input name="amount" type="number" placeholder="amount" required pattern="[0-9\.]+" value="0.00" step="0.01">
                             <br>
                             <button type="submit" name="transfer-submit" id="transferbtn">Transfer</button>
                         </div>

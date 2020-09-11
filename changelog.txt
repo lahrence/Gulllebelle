@@ -1,3 +1,22 @@
+Gull-le-Belle pre-1.1.0
+    - added Dashboard page in replacement of Accounts
+    - added card layout (more modular)
+    - added vertical navigation to user information pages
+    - added log-in page
+    - added settings page to visually change the setup.json
+    - added transaction page to add custom transactions
+    - added delay to transfer, log-in, sign up, log out, etc to appear more convincing
+    - added new settings:
+        - "currency" changes the currency type, type of string
+        - "currencySymbol" changes the currency symbol, type of string
+        - "transferLimit" sets a limit to transfers (does not apply to transactions), type of float
+    - added new features
+        - "ctrl + down_arrow" will navigate you to settings
+        - clicking the welcome message on the dashboard will navigate you to settings
+    - removed accounts, and activities-all from navigation bar
+    - replaced log-in modal with "log-in, register" modal
+#2020/9/10# PDT
+
 Gull-le-Belle 1.0.0
     - added setup.json to store settings
     - added ability to download custom files

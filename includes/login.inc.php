@@ -5,17 +5,17 @@ if (isset($_POST['login-submit'])) {
     $password = $_POST['pwd'];
     if (empty($password)) {
         if (empty($mailuid)) {
-            header("Location: ../index.php?error=emptyfields");
+            header("Location: ../login/index.php?error=emptyfields");
             exit();
         } else {
-            header("Location: ../index.php?error=emptyfields&mailuid=".$mailuid);
+            header("Location: ../login/index.php?error=emptyfields&mailuid=".$mailuid);
             exit();
         }
     } else {
         $sql = "SELECT * FROM users WHERE uidUsers=? OR emailUsers=?;";
         $stmt = mysqli_stmt_init($conn);
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("Location: ../index.php?error=sqlerror");
+            header("Location: ../login/index.php?error=sqlerror");
             exit();
         } else {
             mysqli_stmt_bind_param($stmt, "ss", $mailuid, $mailuid);
@@ -24,7 +24,7 @@ if (isset($_POST['login-submit'])) {
             if ($row = mysqli_fetch_assoc($result)) {
                 $pwdCheck  = password_verify($password, $row['pwdUsers']);
                 if ($pwdCheck == false) {
-                    header("Location: ../index.php?error=wrongpwd&mailuid=".$mailuid);
+                    header("Location: ../login/index.php?error=wrongpwd&mailuid=".$mailuid);
                     exit();
                 } else if ($pwdCheck == true) {
                     session_start();
@@ -41,14 +41,18 @@ if (isset($_POST['login-submit'])) {
                     $_SESSION['savNum'] = $row['savNum'];
                     $_SESSION['credNum'] = $row['credNum'];
                     $_SESSION['sessionTimeStamp'] = time();
-                    header("Location: http://".$_SERVER['HTTP_HOST']."/accounts/index.php?login=success");
+                    sleep(2);
+                    echo "Pending...";
+                    sleep(2);
+                    echo "Log in completed!";
+                    header("Location: http://".$_SERVER['HTTP_HOST']."/dashboard/index.php?login=success");
                     exit();
                 } else {
-                    header("Location: ../index.php?error=wrongpwd&mailuid=".$mailuid);
+                    header("Location: ../login/index.php?error=wrongpwd&mailuid=".$mailuid);
                     exit();
                 }
             } else {
-                header("Location: ../index.php?error=usernotfound");
+                header("Location: ../login/index.php?error=usernotfound");
                 exit();
             }
         }

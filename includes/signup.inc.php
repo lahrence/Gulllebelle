@@ -10,16 +10,16 @@ if (isset($_POST['signup-submit'])) {
     $password = $_POST['pwd'];
     $passwordRepeat = $_POST['pwd-repeat'];
     
-    $chck1 = rand(1, 9999);
-    $chck = strval(sprintf("%04d", $chck1));
+    $chck1 = rand(1, 9999999999999999);
+    $chck = strval(sprintf("%016d", $chck1));
                     
-    $sav1 = rand(1, 9999);
-    $sav = strval(sprintf("%04d", $sav1));
+    $sav1 = rand(1, 9999999999999999);
+    $sav = strval(sprintf("%016d", $sav1));
                     
-    $cred1 = rand(1, 9999);
-    $cred = strval(sprintf("%04d", $cred1));
+    $cred1 = rand(1, 9999999999999999);
+    $cred = strval(sprintf("%016d", $cred1));
     
-    $checkingBal = 500000.00;
+    $checkingBal = 10000.00;
     $savingsBal = 5000.00;
     $creditBal = 1000.00;
     
@@ -27,19 +27,22 @@ if (isset($_POST['signup-submit'])) {
         header("Location: ../signup/index.php?error=emptyfields&uid=".$username."&mail=".$email."&firstname=".$firstname."&lastname=".$lastname);
         exit();
     } else if (!filter_var($email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-9]*$/", $username)) {
-        header("Location: ../signup/index.php?error=invalidmailuid");
+        header("Location: ../signup/index.php?error=invalidmailuid&firstname=".$firstname."&lastname=".$lastname);
         exit();
     } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: ../signup/index.php?error=invalidmail&uid=".$username);
+        header("Location: ../signup/index.php?error=invalidmail&uid=".$username."&firstname=".$firstname."&lastname=".$lastname);
         exit();
     } else if (!preg_match("/^[a-zA-Z0-9]*$/", $username)) {
         header("Location: ../signup/index.php?error=invaliduid&mail=".$email);
         exit();
     } else if ($password !== $passwordRepeat) {
-        header("Location: ../signup/index.php?error=passwordcheck&uid=".$username."&mail=".$email);
+        header("Location: ../signup/index.php?error=passwordcheck&uid=".$username."&mail=".$email."&firstname=".$firstname."&lastname=".$lastname);
         exit();
-    } else if ((strlen($lastname) > 35) || (strlen($firstname) > 35)) {
-        header("Location: ../signup/index.php?error=characterlimit&uid=".$username."&mail=".$email);
+    } else if ((strlen($lastname) > 35)) {
+        header("Location: ../signup/index.php?error=characterlimit&uid=".$username."&mail=".$email."&firstname=".$firstname);
+        exit();
+    } else if ((strlen($firstname) > 35)) {
+        header("Location: ../signup/index.php?error=characterlimit&uid=".$username."&mail=".$email."&lastname=".$lastname);
         exit();
     } else {
         $sql = "SELECT uidUsers FROM users WHERE uidUsers=?";
@@ -88,7 +91,11 @@ if (isset($_POST['signup-submit'])) {
                     echo file_put_contents($newFileName, $username);
                     $fp = fopen('../assets/users/'.$username.'.json', 'w');
                     fwrite($fp, json_encode($activity, JSON_PRETTY_PRINT));
-                    header("Location: ../index.php?signup=success");
+                    sleep(2);
+                    echo "Pending...";
+                    sleep(2);
+                    echo "Sign up completed!";
+                    header("Location: ../log-in/index.php?signup=success&uid=".$username);
                     exit();
                 }
             }

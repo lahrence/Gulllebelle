@@ -1,6 +1,10 @@
 {
-    "overlay": true,
-    "downloadButton": false,
-    "downloadButtonText": "Statements",
-    "downloadFileLink": "/assets/Gull-le-Belle-records.zip"
+    "overlay": false,
+    "downloadButton": true,
+    "downloadButtonText": "Download",
+    "downloadFileLink": "\/assets\/Gull-le-Belle-records.zip",
+    "currency": "usd",
+    "currencySymbol": "$",
+    "transferLimit": 100000,
+    "darkMode": false
 }
