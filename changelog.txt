@@ -1,4 +1,5 @@
 Gull-le-Belle pre-1.1.0
+    - added 404 error page
     - added Dashboard page in replacement of Accounts
     - added card layout (more modular)
     - added vertical navigation to user information pages
