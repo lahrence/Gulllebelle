@@ -11,6 +11,7 @@ Gull-le-Belle pre-1.1.0
         - "currency" changes the currency type, type of string
         - "currencySymbol" changes the currency symbol, type of string
         - "transferLimit" sets a limit to transfers (does not apply to transactions), type of float
+        - "inactivityTimer" sets the time it takes to log out the user due to inactivity, type of int
     - added new features
         - "ctrl + down_arrow" will navigate you to settings
         - clicking the welcome message on the dashboard will navigate you to settings

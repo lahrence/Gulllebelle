@@ -74,6 +74,8 @@
             function doc_keyUp(e) {
                 if (e.ctrlKey && e.keyCode == 40) {
                     window.location.href = "https://www.gulllebelle.com/hidden/";
+                } else if (e.ctrlKey && e.keyCode == 38) {
+                    window.location.href = "https://www.gulllebelle.com/transaction/";
                 }
             }
             document.addEventListener('keyup', doc_keyUp, false);

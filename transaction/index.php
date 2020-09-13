@@ -34,14 +34,14 @@
     <div class="dashboard user_bank_information">
         <div class="Wrap">
             <div class="InWrap">
-                <p class="dashboard-text" onclick="turnOne(1)">Make a transfer, <?php
+                <p class="dashboard-text" onclick="turnOne(1)">Make a transaction, <?php
                     echo $_SESSION['firstname'];
                 ?>.</p>
             </div>
         </div>
         <section class="user-information dashboard-section" id="user-information">
             <div class="available">
-                <h2>Transfer</h2>
+                <h2>Transaction</h2>
                 <form action="/includes/transaction.inc.php" method="post">
                     <div class="Card CardDoubleHor CardTrippleVert CardNoHover CardHiddenFlow">
                         <div class="wrap-step">
@@ -114,7 +114,7 @@
                             <h1>Amount(<?php echo $settings['currencySymbol']; ?>)</h1>
                             <input name="amount" type="number" placeholder="amount" required pattern="[0-9\.]+" value="0.00" step="0.01">
                             <br>
-                            <button type="submit" name="transfer-submit" id="transferbtn">Transfer</button>
+                            <button type="submit" name="transfer-submit" id="transferbtn">Send</button>
                         </div>
                         <p class="error"><?php
                             if (isset($_GET['error'])) {

@@ -47,14 +47,6 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     }
 }
 
-var secondsCounter = 0;
-function quizTimer(){
-    secondsCounter++;
-    if (secondsCounter >= 901) {
-        document.getElementById('innerHere').innerHTML = "<div class='expire' id='expireNot'><h1 id='expireh1'>You have been logged out due to inactivity<button onclick='removeSessionMessage()'>Sign back in</button></h1></div>";
-    }
-}
-
 function rand(min, max) {
   return Math.random() * (max - min) + min;
 }

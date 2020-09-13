@@ -33,7 +33,7 @@
                 echo '<div class="overlay"></div>';
             }
         ?>
-        <div class="innerHere">
+        <div class="innerHere"></div>
         <div class="user-info">
             <div class="userdis">
             <h3>Accounts</h3>

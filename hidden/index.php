@@ -8,6 +8,17 @@
         header("Location: ../");
         exit();
     }
+    
+    if (isset($_SESSION['userId'])) {
+        echo '
+        <script>
+        var functionName = quizTimer();
+        setInterval(function () {
+            quizTimer();
+        }, 1000);
+        
+        </script>';
+    }
 
     $json = trim(file_get_contents("../setup.json"), "\xEF\xBB\xBF");
     $settings = json_decode($json, true);
@@ -63,6 +74,30 @@
                 <h2>Gull le Belle Settings</h2>
                 <form action="/includes/setup.inc.php" method="post">
                     <div class="Card CardTrippleVert CardDoubleHor CardNoHover">
+                            <p class="<?php
+                                if (isset($_GET['error'])) {
+                                    echo 'error';
+                                } else if (isset($_GET['update'])) {
+                                    echo 'success';
+                                }
+                            ?>"><?php
+                                if (isset($_GET['error'])) {
+                                    switch ($_GET['error']) {
+                                        case 'noamount':
+                                            echo 'Please enter a valid value.';
+                                            break;
+                                        case 'emptyfields':
+                                            echo 'You left something out.';
+                                            break;
+                                        default:
+                                            echo '&nbsp;';
+                                    }
+                                } else if (isset($_GET['update'])) {
+                                    if ($_GET['update'] == 'success') {
+                                        echo 'success!';
+                                    }
+                                }
+                            ?></p>
                         <div class="CardSection CardSectionFirst firstSection">
                             <h1>Overlay</h1>
                             <label class="container" oninput="settingsRead()">On/Off
@@ -89,31 +124,37 @@
                             <h1>Download button text</h1>
                             <input name="downloadButtonText" class="settings-input" type="text" oninput="settingsRead()" <?php
                                 echo 'value="'.$settings['downloadButtonText'].'"';
-                            ?>>
+                            ?> required>
                         </div>
                         <div class="CardSection">
                             <h1>Download file location</h1>
                             <input name="downloadFileLink" class="settings-input" type="text" oninput="settingsRead()" <?php
                                 echo 'value="'.$settings['downloadFileLink'].'"';
-                            ?>>
+                            ?> required>
                         </div>
                         <div class="CardSection">
                             <h1>Currency (ie. usd)</h1>
                             <input name="currency" class="settings-input" type="text" oninput="settingsRead()" <?php
                                 echo 'value="'.$settings['currency'].'"';
-                            ?>>
+                            ?> required>
                         </div>
                         <div class="CardSection">
                             <h1>Currency symbol (ie. $, ¥)</h1>
                             <input name="currencySymbol" class="settings-input" type="text" oninput="settingsRead()" maxlength="1" <?php
                                 echo 'value="'.$settings['currencySymbol'].'"';
-                            ?>>
+                            ?> required>
                         </div>
                         <div class="CardSection">
                             <h1>Transfer limitation</h1>
                             <input name="transferLimit" class="settings-input" type="number" oninput="settingsRead()" <?php
                                 echo 'value="'.$settings['transferLimit'].'"';
                             ?>>
+                        </div>
+                        <div class="CardSection">
+                            <h1>Inactivity Timer (in seconds)</h1>
+                            <input name="inactivityTimer" class="settings-input" type="number" oninput="settingsRead()" <?php
+                                echo 'value="'.$settings['inactivityTimer'].'"';
+                            ?> required>
                         </div>
                         <div class="CardSection CardSectionFirst firstSection">
                             <h1>Dark Mode (not implemented)</h1>
@@ -130,29 +171,7 @@
                         <div class="CardSection CardSectionFirst firstSection">
                             <br>
                             <button id="updateBtn" title="Make some changes." disabled>Update</button>
-                            <br>
-                            <a href="/transaction/" class="toOne">Fake a transaction</a>
                         </div>
-                            
-
-                        <p class="error"><?php
-                            if (isset($_GET['error'])) {
-                                switch ($_GET['error']) {
-                                    case 'limitreached':
-                                        echo 'You have reached the limit of '.'$'.number_format(abs($settings["transferLimit"]), 2, '.', ',').' transfers.';
-                                        break;
-                                    case 'noamount':
-                                        echo 'Please enter a valid value.';
-                                        break;
-                                    case 'invalidaccounts':
-                                        echo 'Money cannot be transfered into the same account.';
-                                        break;
-                                    case 'insufficientfunds':
-                                        echo 'You have insufficient funds in your account.';
-                                        break;
-                                }
-                            }
-                        ?></p>
                     </div>
                 </form>
             </div>

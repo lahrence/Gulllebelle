@@ -6,5 +6,6 @@
     "currency": "usd",
     "currencySymbol": "$",
     "transferLimit": 100000,
+    "inactivityTimer": 1800,
     "darkMode": false
 }
